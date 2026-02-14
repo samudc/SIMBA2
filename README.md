@@ -11,7 +11,7 @@ Ischemic stroke remains a leading cause of death and long-term disability. Altho
 
 To enable selective targeting of pathological JNK3 signaling, we used structural modeling and atomistic simulations to identify binding determinants between the C-terminal domain of human β-arrestin2 (BA2-Ct) and the N-terminal tail of JNK3 (JNK3-Nt). Importantly, JNK3-Nt is an intrinsically disordered region (IDR), whose conformational heterogeneity complicates conventional structural characterization.
 
-Unbiased MD and REHT were employed to enhance sampling of IDR-mediated interactions and to map JNK3-Nt residue-level binding hotspots on BA2-Ct. Contact probability analyses across the conformational ensemble enabled identification of a minimal BA2-derived interface region, which was subsequently extracted to engineer SIMBA2, a brain-penetrant miniprotein that selectively inhibits JNK3 signaling and confers sustained neuroprotection in vivo.
+Unbiased MD and REHT were employed to enhance sampling of IDR-mediated interactions and to map JNK3-Nt residue-level binding hotspots on BA2-Ct. Contact probability analyses across the conformational ensemble enabled identification of a minimal BA2-derived interface region, which was subsequently extracted to engineer SIMBA2, a brain-penetrant miniprotein that selectively inhibits JNK3 signaling and confers sustained neuroprotection *in vivo*.
 
 **Repository Contents**
 
