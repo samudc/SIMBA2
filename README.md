@@ -1,4 +1,4 @@
-BA2-Ct/JNK3-Nt unbiased MD and REHT inputs
+**BA2-Ct/JNK3-Nt unbiased MD and REHT inputs**
 
 This repository contains the input files required to reproduce the unbiased molecular dynamics (MD) and enhanced-sampling simulations (Replica Exchange With Hybrid Tempering, REHT) described in:
 
