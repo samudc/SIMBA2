@@ -1,0 +1,29 @@
+# set nrep as number of replicas -1 one
+nrep=31
+listMultidir=$(for i in $(seq 0 $nrep); do echo repl_${i}; done | xargs)
+echo $listMultidir
+
+# production (prod)
+# extend tpr files: equil.tpr → prod.tpr
+# allow exchanges every 500 steps
+# production length example: 1 microsecond
+# choose extend_steps according to desired simulation time
+
+# copy replicas directories from "2_REHT-equilibration"
+cp ../2_REHT_equilibration/repl_* . 
+
+# here extend is set to 500000000 steps (1 micro fpr dt=2fs): 
+extend_steps=500000000
+
+# copy state.cpt and topol.cpt here
+for i in $(echo repl_{0..31}) ; do
+    cd $i ; 
+    cp state.cpt topol.cpt ; 
+    gmx_mpi convert-tpr -s equil.tpr -o prod.tpr -extend $extend_steps ; 
+    cd ..
+done
+
+# sample production run command
+mpirun -np 32 gmx_mpi mdrun -v -s prod.tpr -plumed plumed.dat -multidir ${listMultidir} -cpi topol.cpt -noappend -replex 500 -hrex -dlb no &
+
+

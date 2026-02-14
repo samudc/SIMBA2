@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+gmx grompp -f mdps/2a_npt.mdp -c 1c_em.gro -r 1c_em.gro -p topol.top -o 2a_npt.tpr -n index.ndx   ;
+gmx mdrun  -ntomp 16 -pin on -v -deffnm 2a_npt ;
+
+gmx grompp -f mdps/2b_nvt.mdp -c 2a_npt.gro -r 2a_npt.gro -p topol.top -o 2b_nvt.tpr -n index.ndx   ;
+gmx mdrun  -ntomp 16 -pin on -v -deffnm 2b_nvt ;
+
+for i in {3..7}; do
+	#NPT
+	gmx grompp -f mdps/${i}a_npt.mdp -c $((i-1))b_nvt.gro -r $((i-1))b_nvt.gro -p topol.top -o ${i}a_npt.tpr -n index.ndx  ;
+	gmx mdrun -ntomp 16 -pin on  -v -deffnm ${i}a_npt ;
+	#NVT
+	gmx grompp -f mdps/${i}b_nvt.mdp -c ${i}a_npt.gro -r ${i}a_npt.gro -p topol.top -o ${i}b_nvt.tpr -n index.ndx  ;
+	gmx mdrun -ntomp 16 -pin on  -v -deffnm ${i}b_nvt ;
+done
+
+#NPT
+gmx grompp -f mdps/8a_npt.mdp -c 7b_nvt.gro -r 7b_nvt.gro -p topol.top -o 8a_npt.tpr -n index.ndx  ;
+gmx mdrun -ntomp 16 -pin on  -v -deffnm 8a_npt ;
+#NVT
+gmx grompp -f mdps/8b_nvt.mdp -c 8a_npt.gro -r 8a_npt.gro -p topol.top -o 8b_nvt.tpr -n index.ndx  ;
+gmx mdrun -ntomp 16 -pin on  -v -deffnm 8b_nvt ;
+
+gmx grompp -f mdps/9_npt.mdp -c 8b_nvt.gro -r 8b_nvt.gro -p topol.top -o 9_npt.tpr -n index.ndx  ;
+gmx mdrun -ntomp 16 -v -deffnm 9_npt ; 
+
+gmx grompp -f mdps/10_npt.mdp -c 9_npt.gro -r 9_npt.gro -p topol.top -o 10_npt.tpr -n index.ndx  ;
+gmx mdrun -ntomp 16 -v -deffnm 10_npt ;
+

@@ -1,0 +1,12 @@
+source leaprc.protein.ff14SB
+source leaprc.water.tip3p
+
+protein = loadpdb BA2-Ct_capped.pdb
+
+solvateoct protein TIP3PBOX  12.0
+addIonsRand protein Na+ 33 Cl- 37
+
+check protein
+saveamberparm   protein  leap.top  leap.rst
+savepdb         protein  BA2C_solv_box.pdb
+quit

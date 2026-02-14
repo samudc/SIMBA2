@@ -1,0 +1,45 @@
+title                   = Amber NVT equilibration 
+define                  = -DPOSRES -DPOSRES_FC_BB=50.0 -DPOSRES_FC_SC=0
+
+; Parameters describing what to do, when to stop and what to save
+integrator              = md        ; leap-frog integrator
+dt                      = 0.002     ; 2 fs
+nsteps                  = 5000000   ; 10 000 ps 
+
+continuation            = yes
+
+; Keep system temperature fluctuating physically correct
+tcoupl                  = V-rescale           ; modified Berendsen thermostat
+tc-grps                 = Protein Water_and_ions  ; coupling groups 
+tau_t                   = 1.0 1.0    ; time constant, in ps
+ref_t                   = 300 300     ; reference temperature, one for each group, in K
+
+; Pressure coupling is off
+pcoupl                  = no
+
+; GENERATE VELOCITIES FOR STARTUP RUN
+gen_vel                  = no
+;gen-temp                = 300
+;gen-seed                = -1
+
+; Settings that make sure we run with parameters in harmony with the selected force-field
+constraints             = h-bonds   ; bonds involving H are constrained
+rcoulomb                = 1.0       ; short-range electrostatic cutoff (in nm)
+rvdw                    = 1.0       ; short-range van der Waals cutoff (in nm)
+vdw-modifier            = Potential-shift-Verlet ; Amber specific
+DispCorr                = EnerPres  ; account for cut-off vdW scheme
+coulombtype             = PME       ; Particle Mesh Ewald for long-range electrostatics
+fourierspacing          = 0.125     ; grid spacing for FFT
+
+
+; OUTPUT CONTROL OPTIONS
+; Output frequency for coords (x), velocities (v) and forces (f)
+nstxout                  = 50000
+nstvout                  = 10000
+nstfout                  = 0
+; Output frequency for energies to log file and energy file
+nstlog                   = 500
+nstenergy                = 500
+; Output frequency and precision for xtc file
+nstxtcout                = 500
+xtc-precision            = 1000

@@ -1,0 +1,12 @@
+source leaprc.protein.ff14SB
+source leaprc.water.tip3p
+
+protein = loadpdb input.pdb 
+
+solvateBox protein TIP3PBOX  14.0
+addIonsRand protein Na+ 55 Cl- 59
+
+check protein
+saveamberparm   protein  leap.top  leap.rst
+savepdb         protein  input_solv_box.pdb
+quit

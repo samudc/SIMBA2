@@ -1,0 +1,2 @@
+gmx grompp -f prod.mdp -c 10_npt.gro -r 10_npt.gro -p topol.top -o prod.tpr -n index.ndx 
+nohup gmx mdrun -ntomp 16 -v -deffnm prod & 

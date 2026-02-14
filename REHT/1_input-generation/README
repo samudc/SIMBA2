@@ -1,0 +1,61 @@
+# 1_input-generation
+
+# workflow description:
+# this workflow prepares multiple simulation input files for REHT runs
+# it generates .mdp files at different temperatures, creates a processed topology, 
+# and then applies atom-type scaling to produce the final scaled topology
+# the user only needs to provide the required input files and run the scripts in order
+
+# required input files
+# these files must be present before starting the workflow:
+# *.gro          system coordinate file
+# index.ndx      index groups
+# topol.top      topology file
+# sample.mdp     template mdp file
+
+# prepare multiple .mdp files
+# set system tmax and number of replicas inside this script
+nohup ./prep_mdp.sh > prep_mdp.log &
+
+# generate processed topology
+# the processed topology file must not contain any #include statements
+gmx grompp -c input.gro -f md.mdp -p topol.top -pp -n index.ndx
+
+# simplified explanation:
+# to make it easier to add underscores to solute atom types,
+# the following awk command modifies the second column for a selected range of lines
+# and writes the result to processed_.top
+# the variables START and END specify the first and last line numbers of the processed.top file 
+# that contain atoms that will be selected as solute regions.
+
+awk -v start_line=START -v end_line=END '{n++; if(n>start_line) if(n<end_line) if(NF>7) if($1+0==$1){$2=$2"_"}; print;}' processed.top > processed_.top
+
+# example of unscaled vs scaled atom entries
+
+# unscaled atoms
+[ atoms ]
+; nr    type   resnr residue atom  cgnr  charge       mass     typeB chargeB massB
+; residue 1 ace rtp ace q 0.0
+  1      HC      1    ACE    H1     1    0.11230000   1.008000   ; qtot 0.112300
+  2      CT      1    ACE    CH3    2   -0.36620000  12.010000   ; qtot -0.253900
+  3      HC      1    ACE    H2     3    0.11230000   1.008000   ; qtot -0.141600
+  4      HC      1    ACE    H3     4    0.11230000   1.008000   ; qtot -0.029300
+  5      C       1    ACE    C      5    0.59720000  12.010000   ; qtot 0.567900
+  6      O       1    ACE    O      6   -0.56790000  16.000000   ; qtot 0.000000
+
+# scaled atoms (atom types have "_" appended)
+[ atoms ]
+; nr    type   resnr residue atom  cgnr  charge       mass     typeB chargeB massB
+; residue 1 ace rtp ace q 0.0
+  1      HC_     1    ACE    H1     1    0.11230000   1.008000
+  2      CT_     1    ACE    CH3    2   -0.36620000  12.010000
+  3      HC_     1    ACE    H2     3    0.11230000   1.008000
+  4      HC_     1    ACE    H3     4    0.11230000   1.008000
+  5      C_      1    ACE    C      5    0.59720000  12.010000
+  6      O_      1    ACE    O      6   -0.56790000  16.000000
+
+# scale topologies
+# note: the scaled topology must be named "processed_.top"
+# set scaled atoms tmax and number of replicas inside this script
+nohup ./scale_topo.sh input.gro > scale_topo.log &
+

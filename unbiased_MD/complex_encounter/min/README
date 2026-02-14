@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+#ENERGY MINIMIZATION
+#1st EM
+gmx grompp -f mdps/1a_emin-sd-amber.mdp -c ions.gro -p topol.top -o 1a_em.tpr -r ions.gro ;
+gmx mdrun  -v -deffnm 1a_em ;
+#2nd EM
+gmx grompp -f mdps/1b_emin-sd-amber.mdp -c 1a_em.gro -r 1a_em.gro -p topol.top -o 1b_em.tpr ;
+gmx mdrun  -v -deffnm 1b_em ;
+#3rd EM 
+gmx grompp -f mdps/1c_emin-sd-amber.mdp -c 1b_em.gro -r 1b_em.gro -p topol.top -o 1c_em.tpr ;
+gmx mdrun  -v -deffnm 1c_em ;

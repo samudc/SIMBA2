@@ -1,0 +1,22 @@
+# move '1md*.tpr' from '1_input-generation' into this directory
+
+# the following one-liner loops over all .tpr files, creates replica folders,
+# places each .tpr inside its corresponding directory with a standard name,
+# and generates an empty plumed.dat file in each replica directory
+
+mkdir orig.tprs ;
+for i in $(ls *tpr) ; do n=$(echo $i | cut -d. -f1 | cut -dd -f2) ; mkdir repl_${n} ; cp $i ./repl_${n}/equil.tpr ; touch ./repl_${n}/plumed.dat ; done
+mv *tpr ./orig.tprs/
+
+# set nrep as the highest replica index (number of replicas -1)
+nrep=31
+listMultidir=$(for i in $(seq 0 $nrep); do echo repl_${i}; done | xargs)
+echo $listMultidir
+
+# equilibration
+# run 1 ns of equilibration without exchange to relax each replica at its target temperature
+# here we use 5000001 steps (1 ns + 1 extra step)
+
+# run equilibration
+mpirun -np 32 gmx_mpi mdrun -v -s equil.tpr -plumed plumed.dat -multidir ${listMultidir} -replex 500001 -hrex -dlb no -pin on &
+
