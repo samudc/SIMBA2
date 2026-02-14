@@ -17,18 +17,17 @@ Unbiased MD and REHT were employed to enhance sampling of IDR-mediated interacti
 
 Included:
 
-	- unbiased MD inputs (.gro, .tpr, .mdp, topology files)
-	- REHT input generation files, equilibration and production files (32 replicas)
-	- contact map analysis Python script used to quantify BA2-Ct/JNK3-Nt intermolecular interactions
+- unbiased MD inputs (.gro, .tpr, .mdp, topology files)
+- REHT input generation files, equilibration and production files (32 replicas)
+- contact map analysis Python script used to quantify BA2-Ct/JNK3-Nt intermolecular interactions
 
 
 **Software Requirements**
 
 Simulations were performed and analyzed using:
 
-	- GROMACS 2022.5 patched with PLUMED 2.9.0
-
-	- Python3: numpy, MDAnalysis, mdtraj, matplotlib 
+- GROMACS 2022.5 patched with PLUMED 2.9.0
+- Python3: numpy, MDAnalysis, mdtraj, matplotlib 
 
 See folder-specific README files for details.
 
