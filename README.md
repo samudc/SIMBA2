@@ -18,7 +18,7 @@ Unbiased MD and REHT were employed to enhance sampling of IDR-mediated interacti
 Included:
 
 - unbiased MD inputs (.gro, .tpr, .mdp, topology files)
-- REHT input generation files, equilibration and production files (32 replicas)
+- REHT input generation, equilibration and production files (32 replicas)
 - contact map analysis Python script used to quantify BA2-Ct/JNK3-Nt intermolecular interactions
 
 
